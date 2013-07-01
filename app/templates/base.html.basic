@@ -1,0 +1,17 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - invidio</title>
+    {% else %}
+    <title>invidio</title>
+    {% endif %}
+  </head>
+  <body>
+    <div>
+        Sample Site: <a href="/index">Home</a>
+        Videos: <a href="/videos">Videos</a>
+    </div>
+    <hr>
+    {% block content %}{% endblock %}
+  </body>
+</html>

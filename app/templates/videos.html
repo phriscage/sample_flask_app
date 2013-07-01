@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{% for video in videos %}
+    {% for key, values in video.items() %}
+        <div><p>{{video[key].title}}: <b>{{video[key].description}}</b></p></div>
+    {% endfor %}
+{% endfor %}
+{% endblock %}
+
