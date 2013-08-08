@@ -3,7 +3,7 @@
     specific hanlders function.
 """
 from flask import jsonify, Blueprint
-from handlers import get_video, get_videos, get_add_numbers
+from app.helpers.lazy_view import LazyView
 
 api_1 = Blueprint('api_1', __name__)
 
@@ -17,7 +17,9 @@ def default_error_handle(error=None):
     return jsonify(error=error.code, message=error.message, success=False), \
         error.code
 
-api_1.add_url_rule('/videos', methods=['GET'], view_func=get_videos)
+api_1.add_url_rule('/videos', methods=['GET'], 
+    view_func=LazyView('app.api_1.handlers.get_videos'))
 api_1.add_url_rule('/videos/<string:video_id>', methods=['GET'], 
-    view_func=get_video)
-api_1.add_url_rule('/add_numbers', methods=['GET'], view_func=get_add_numbers)
+    view_func=LazyView('app.api_1.handlers.get_video'))
+api_1.add_url_rule('/add_numbers', methods=['GET'], 
+    view_func=LazyView('app.api_1.handlers.get_add_numbers'))

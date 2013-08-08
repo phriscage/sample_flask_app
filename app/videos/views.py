@@ -3,9 +3,11 @@
     specific hanlders function.
 """
 from flask import Blueprint
-from handlers import get_video, get_videos
+from app.helpers.lazy_view import LazyView
 
 videos = Blueprint('videos', __name__)
 
-videos.add_url_rule('/', methods=['GET'], view_func=get_videos)
-videos.add_url_rule('/<string:video_id>', methods=['GET'], view_func=get_video)
+videos.add_url_rule('/', methods=['GET'], 
+    view_func=LazyView('app.videos.handlers.get_videos'))
+videos.add_url_rule('/<string:video_id>', methods=['GET'], 
+    view_func=LazyView('app.videos.handlers.get_video'))
