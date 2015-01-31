@@ -1,4 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="well">
+          <form id="video-form" role="form">
+            <div class="form-group">
+              <label class="control-label">Name</label>
+              <input class="form-control" id="name" placeholder="hello@example.com" type="text">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="control-label">Type</label>
+              <input class="form-control" id="type" placeholder="******" type="password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+          </form>
+      </div>
+    </div>
+</div>
 {% endblock %}
-
+{% block js_footer %}
+{{ super() }}
+<script>
+(function(){
+    /**
+     * Handle submit for user
+     */
+    $('#video-form').on('submit', function(e){
+        console.log(e);
+        e.preventDefault();
+        var data = {
+            'name': $('#name').val(),
+            'type': $('#type').val()
+        };
+        console.log(data);
+        $.ajax({
+          type: 'POST',
+          url: '/videos',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          success: function (response, status, xhr) {
+            console.log("Success!!");
+            console.log(response.data);
+            console.log(xhr.status);
+            if (xhr.status === 200 && response.url) {
+                // response.redirect contains the string URL to redirect to
+                window.location.href = response.url;
+            } else {
+                // response.form contains the HTML for the replacement form
+                console.log(response.message)
+                $("password").replaceWith(response.message);
+            }
+          },
+          error: function (xhr, desc, err) {
+            console.log(xhr);
+            console.log("Desc: " + desc + "\nErr:" + err);
+          }
+        });
+    });
+})();
+</script>
+{% endblock %}
